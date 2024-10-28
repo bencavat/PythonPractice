@@ -1,7 +1,7 @@
 ---
 # Python  
 ---
-*edited: Friday, Oct 25th*
+*edited: Friday, Oct 28th*
 ## Automating the boring stuff
 ### Chapter 1: Python programming basics
 **Expression vs statement**: an expression is a combination of values and operators. All expressions evaluate (i.e. reduce) to a single value, statements do not.
@@ -53,6 +53,21 @@ Out[6]: ['tuxedo', 'orange', 'Sphynx']
 ```
 To avoid modifying the original list or dictionary, you can use the module `copy` which includes functions `copy()` and `deepcopy()` (the latter is used for embedded lists).
 
+> "The del statement is good to use when you know the index of the value
+you want to remove from the list. The remove() method is good when you
+know the value you want to remove from the list." (p. 91)
+
 ### Chapter 5: Dictionaries and Structuring Data
 
+`keys(), values(), items()`: values returned are not true lists but they can be used in `for` loops. NB: values returned by `items()` method are tuples.  
+Can use get() method on dictionary to retrieve value based on key. get() takes two arguments: the key you are searching for, and a default value if the key doesn't exist.  
+Use `setdefault` to create a key value if the key does not exist already. If it does exist, it will return the current value. Can use it to create a character counter for example:
+```
+count = {}
+string = "foo bar baz"
+for character in message:
+    count.setdefault('character', 0)
+	count[character] += 1
+``` 
 
+Can pretty print a dictionary to make it easier to read using `pprint` and `pformat`
