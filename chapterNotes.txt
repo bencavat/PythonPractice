@@ -1,0 +1,58 @@
+---
+# Python  
+---
+*edited: Friday, Oct 25th*
+## Automating the boring stuff
+### Chapter 1: Python programming basics
+**Expression vs statement**: an expression is a combination of values and operators. All expressions evaluate (i.e. reduce) to a single value, statements do not.
+### Chapter 2: Flow control
+**Condition**: A condition is an expression used in a flow control statement that evaluates to a Boolean value.  
+**Break vs continue statements**: The break statement will move the execution outside and just after a loop. The continue statement will move the execution to the start of the loop.
+### Chapter 3: Functions
+The data type of `None` is `NoneType`.  
+Can use the `global` statement to modify a global variable from within a function. eg:
+```
+def spam()
+  global eggs
+  eggs = 'spam'
+
+eggs = 'global'
+spam()
+print(eggs)
+```
+Output: `spam`  
+Exception handling: to avoid program crash from errors/exceptions, do `try` and `except` clauses. Eg: `except ZeroDivisionError`
+
+### Chapter 4: Lists
+NB: slice of a list will include the first item, but will go up (not including) the second item. `spam[1:3]` grabs `spam[1]` and `spam[2]`.  
+Multiple assignment trick: can assign a list as a value for three variables. Make sure to have the same number of variables and items in the list or you'll get a `ValueError`
+```
+cat = [tuxedo, tabby, Sphynx]
+Twist, Daisy, Ramses = cat
+```
+**Method vs function**: method is same as a function, except it is "called on" a value. Difference between `cat.index(tuxedo)` vs `print(cat[0])`  
+Modify lists *in place* with `myList.insert(index, itemToInsert)` and `myList.append(itemToInsert)`.  
+Can also remove items with `myList.remove(itemToRemove)`  
+**List-like data types**: strings and tuples. 
+- String vs list: a list is a **mutable** data type and strings are basically lists of characters.
+- Tuples vs lists: Tuples are types with parentheses, Also, tuples cannot have their values modified/appended/removed. Finally, using tuples is slightly faster.
+
+**⚠References**: be careful when making a copy of a list, because modifying either list will affect the other. **When you assign a list to a variable, you are actually assigning a list reference to the variable.** Essentially, when copying a list, they both point to the same sequence of values. eg:
+```
+cats = ["tuxedo", "tabby", "Sphynx"]
+
+catsCopy = cats
+
+catsCopy
+Out[4]: ['tuxedo', 'tabby', 'Sphynx']
+
+cats[1] = "orange"
+
+catsCopy
+Out[6]: ['tuxedo', 'orange', 'Sphynx']
+```
+To avoid modifying the original list or dictionary, you can use the module `copy` which includes functions `copy()` and `deepcopy()` (the latter is used for embedded lists).
+
+### Chapter 5: Dictionaries and Structuring Data
+
+
