@@ -84,8 +84,89 @@ Use raw strings to enable the use of *escape characters* (`\`, `\t`, `\n`, `"`, 
 - Can import the module **`pyperclip`** (doesn't come by default) to copy and paste things to the clipboard: `pyperclip.copy(myString)`, `pyperclip.paste()`.
 
 ### Chapter 7: Pattern Matching with Regular Expressions
-- Can pass a raw string regex pattern to a `re.compile` object. Will return a **regex pattern object**. eg:
+Can pass a raw string regex pattern to a `re.compile` object. Will return a **regex pattern object**.
 ```
 phoneNumberRegex = re.compile(r'\d{3}-\d{3}-\d{4}')
 ```
-- 
+- if want to capture newline character (`\n`), provide `re.compile()` the argument `re.DOTALL`
+- if you want to ignore case, provide the argument `re.I`
+- if you want to provide a multi-line regex pattern, provide argument `re.VERBOSE`
+
+Can combine the arguments using a *bitwise operator* `|`:
+```
+someRegexValue = re.compile('foo', re.I | re.DOTALL | re.VERBOSE)
+```
+**N.B.** for complex regex searches use `VERBOSE` and comments:
+```
+phoneRegex = re.compile(r'''(
+	(\d{3}|\(\d{3}\))?		# area code
+	(\s|-|\.)? 			# separator
+	\d{3} 				# first 3 digits
+	(\s|-|\.) 			# separator
+	\d{4} 				# last 4 digits
+	(\s*(ext|x|ext.)\s*\d{2,5})?	# extension
+	)''', re.VERBOSE)
+```
+
+Use `.search()` method on the regex object and pass a string value to find matches. NB search returns the first result. If you want to find all matches, use `findall()`.
+```
+matchObject = phoneNumberRegex.search("My number is 415-555-4242.")
+```
+If a match is found, can output the matched sub-string with `.group()`:
+```
+matchObject.group()
+```
+If you are using capture groups `()` in your regex pattern, `.group()` can return either the entire match with `.group()` or `.group(0)`, or your capture group `.group(1)`.
+```
+>>> regexPattern = re.compile(r'(\d{3})-(\d{3}-\d{4})')
+>>> phoneNumberMatch = regexPattern.search("202-805-8085")
+>>> phoneNumberMatch.group()
+'202-805-8085'
+>>> phoneNumberMatch.group(1)
+'202'
+```
+The `findall()` method returns a list of strings with every match in the searched string. **N.B.** if you use the `.findall()` method with capture groups, it will return a list of tuples of strings.
+```
+>>> regexPattern = re.compile(r'(\d{3})-(\d{3}-\d{4})')
+>>> phoneNumberMatch = regexPattern.search("Call is 202-805-8085, home is 212-628-7724")
+>>> phoneNumberMatch.group()
+'202-805-8085'
+>>> phoneNumberMatch.group(1)
+'202'
+>>> phoneNumberMatch.group(2)
+'805-8085'
+>>> AllPhoneNumberFound = regexPattern.findall("Cell is 202-805-8085, home is 212-628-7724")
+>>> AllPhoneNumberFound
+[('202', '805-8085'), ('212', '628-7724')]
+>>> regexPatternNoGroup = re.compile(r'\d{3}-\d{3}-\d{4}')
+>>> AllPhoneNumberFoundNoGroup = regexPatternNoGroup.findall("Cell is 202-805-8085, home is 212-628-7724")
+>>> AllPhoneNumberFoundNoGroup
+['202-805-8085', '212-628-7724']
+```
+**Regex Character Classes:**
+
+shorthand | represents
+-|-
+\d | digits from 0 to 9
+\w | all word characters (letters, digits, underscore)
+\s | space, tab, ot newline character
+
+Make your own character class: 
+```
+vowelRegex = re.compile(r'[AEIOUaeiou]')
+```
+**substitute strings** using the `.sub()` method.
+```
+>>> agentNameRegex = re.compile(r'Agent \w+')
+>>> agentNameRegex.sub("CENSORED", "Agent Ben gave Agent Marina a very important loaf of bread")
+'CENSORED gave CENSORED a very important loaf of bread'
+```
+Your wildcard `.*` can be greedy and will match as much as possible, or **non-greedy** and match the shortest string `.*?`.
+
+Lookahead: `(?=foo)`
+Negative lookbehind: `(?<!foo)`
+- **N.B.** Negative lookbehind can be concatenated.  
+```
+nameMatchObject = re.compile(r'(?<!^)(?<!! )[A-Z][a-z]+')
+```
+> *searching for a name, can use negative lookbehind to exclude both beginning of line and previous punctuation*

@@ -1,4 +1,8 @@
 # decorators.py
+"""
+Decorator practice file.
+require_alpha input decorator function that loops until someone provides an aphabetical string
+"""
 from functools import wraps
 
 def require_alpha(func):
