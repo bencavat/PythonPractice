@@ -1,14 +1,12 @@
----
-# Python  
----
-*edited: Friday, Oct 28th*
-## Automating the boring stuff
-### Chapter 1: Python programming basics
+# Automating the boring stuff
+## Chapter 1: Python programming basics
 **Expression vs statement**: an expression is a combination of values and operators. All expressions evaluate (i.e. reduce) to a single value, statements do not.
-### Chapter 2: Flow control
+
+## Chapter 2: Flow control
 **Condition**: A condition is an expression used in a flow control statement that evaluates to a Boolean value.  
 **Break vs continue statements**: The break statement will move the execution outside and just after a loop. The continue statement will move the execution to the start of the loop.
-### Chapter 3: Functions
+
+## Chapter 3: Functions
 The data type of `None` is `NoneType`.  
 Can use the `global` statement to modify a global variable from within a function. eg:
 ```
@@ -23,7 +21,7 @@ print(eggs)
 Output: `spam`  
 Exception handling: to avoid program crash from errors/exceptions, do `try` and `except` clauses. Eg: `except ZeroDivisionError`
 
-### Chapter 4: Lists
+## Chapter 4: Lists
 NB: slice of a list will include the first item, but will go up (not including) the second item. `spam[1:3]` grabs `spam[1]` and `spam[2]`.  
 Multiple assignment trick: can assign a list as a value for three variables. Make sure to have the same number of variables and items in the list or you'll get a `ValueError`
 ```
@@ -57,7 +55,7 @@ To avoid modifying the original list or dictionary, you can use the module `copy
 you want to remove from the list. The remove() method is good when you
 know the value you want to remove from the list." (p. 91)
 
-### Chapter 5: Dictionaries and Structuring Data
+## Chapter 5: Dictionaries and Structuring Data
 
 `keys(), values(), items()`: values returned are not true lists but they can be used in `for` loops. NB: values returned by `items()` method are tuples.  
 Can use get() method on dictionary to retrieve value based on key. get() takes two arguments: the key you are searching for, and a default value if the key doesn't exist.  
@@ -72,7 +70,7 @@ for character in message:
 
 Can pretty print a dictionary to make it easier to read using `pprint` and `pformat`
 
-### Chapter 6: Manipulating Strings
+## Chapter 6: Manipulating Strings
 Use raw strings to enable the use of *escape characters* (`\`, `\t`, `\n`, `"`, `'`). eg: `r"This is a raw string so I can use \"`  
 
 **String methods**:
@@ -83,7 +81,7 @@ Use raw strings to enable the use of *escape characters* (`\`, `\t`, `\n`, `"`, 
 - remove whitespace with `strip()`, `rstrip()` and `lstrip()`. Whitespace by default but can choose any characters to strip - order doesn't matter i.e. `myString.strip('Spam')` is equivalent to `myString.strip('ampS')`.
 - Can import the module **`pyperclip`** (doesn't come by default) to copy and paste things to the clipboard: `pyperclip.copy(myString)`, `pyperclip.paste()`.
 
-### Chapter 7: Pattern Matching with Regular Expressions
+## Chapter 7: Pattern Matching with Regular Expressions
 Can pass a raw string regex pattern to a `re.compile` object. Will return a **regex pattern object**.
 ```
 phoneNumberRegex = re.compile(r'\d{3}-\d{3}-\d{4}')
@@ -155,7 +153,7 @@ Make your own character class:
 ```
 vowelRegex = re.compile(r'[AEIOUaeiou]')
 ```
-**substitute strings** using the `.sub()` method.
+**substitute strings** using the `.sub()` method:
 ```
 >>> agentNameRegex = re.compile(r'Agent \w+')
 >>> agentNameRegex.sub("CENSORED", "Agent Ben gave Agent Marina a very important loaf of bread")
@@ -163,6 +161,7 @@ vowelRegex = re.compile(r'[AEIOUaeiou]')
 ```
 Your wildcard `.*` can be greedy and will match as much as possible, or **non-greedy** and match the shortest string `.*?`.
 
+**Additional notes:**  
 Lookahead: `(?=foo)`
 Negative lookbehind: `(?<!foo)`
 - **N.B.** Negative lookbehind can be concatenated.  
@@ -170,3 +169,38 @@ Negative lookbehind: `(?<!foo)`
 nameMatchObject = re.compile(r'(?<!^)(?<!! )[A-Z][a-z]+')
 ```
 > *searching for a name, can use negative lookbehind to exclude both beginning of line and previous punctuation*
+
+
+## Chapter 8
+
+`os` functions | usage
+-|-
+`os.getcwd()` | Get current working directory.
+`os.chdir()` | Change working directory
+`os.makedirs()` | Create folder
+|
+`os.path.join()` | Provide directory names and filename as arguments. Attaches argument strings together based on OS. 
+`os.path.abspath(path)` | Get the absolute path of the arg. eg: `os.path.abspath('.')`
+`os.path.isabs(path)` | Boolean; True is arg is absolute path. False if relative.
+`os.path.relpath(path, start)` | Returns string of relative path from `start` to `path`. Will assume current working directory is start if none is provided.
+`os.path.basename(path)` | will provide string of everything the **after** last slash in the `path` argument.
+`os.path.dirname(path)` | will provide string of everything **before** the last slash in the `path` argument.
+`os.path.split(path)` | will provide tuple of two strings, one for before last slash, one for after.
+|
+`os.path.getsize(path)` | returns the size in bytes of the file in `path` arg. To get folder size of `currentPath`, iterate over all filenames in `os.listdir(currentPath)` and add up `os.path.getsize(os.path.join(currentPath,filename)`
+`os.listdir(path)` | returns the list of filename strings for each file in the `path` arg.
+|
+`os.path.isdir()` | Boolean; return True if path exists and is directory.
+`os.path.isfile()` | Boolean; return True if path exists and is file.
+`os.path.exists()` | Boolean; return True if path to file or directory. exists.
+|
+
+
+### Use `os` to avoid issues between Linux and Windows
+To avoid Linux vs Windows path issues, avoid hardcoding `\` for Windows or `/` for Linux.  
+Can use `os.path.sep` object to get the directory separator used by current OS:
+```
+>>> filepath = 'C:\\Windows\\System32\\calc.exe'
+>>> filepath.split(os.path.sep)
+['C:', 'Windows', 'System32', 'calc.exe']
+```
