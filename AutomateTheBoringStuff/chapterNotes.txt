@@ -195,7 +195,6 @@ nameMatchObject = re.compile(r'(?<!^)(?<!! )[A-Z][a-z]+')
 `os.path.exists()` | Boolean; return True if path to file or directory. exists.
 |
 
-
 ### Use `os` to avoid issues between Linux and Windows
 To avoid Linux vs Windows path issues, avoid hardcoding `\` for Windows or `/` for Linux.  
 Can use `os.path.sep` object to get the directory separator used by current OS:
@@ -204,3 +203,44 @@ Can use `os.path.sep` object to get the directory separator used by current OS:
 >>> filepath.split(os.path.sep)
 ['C:', 'Windows', 'System32', 'calc.exe']
 ```
+Three steps of handling a file:
+- `open('filepath', <mode>)` the file to create a file object. By default opens in **read mode** (`'r'`).  Can also open in **append mode** (`'a'`) and **write mode** (`'w'`)
+- `read()` or `write()` the file object. 
+  - Can use `readlines()` instead of `read()` to get a list of strings instead of a whole string of the text.
+- `close()` the file
+
+### Saving variables with `shelve` module
+
+You can save variables into files using `shelve`.  
+This can be useful if you're saving parameters or configurations from your Python script, especially if the data is not meant to be read as a text file.
+```
+import shelve
+shelfFile = shelve.open('mydData')
+dataList = ["alpha", "bravo", "charlie"]
+shelfFile[data] = dataList
+shelfFile.close()
+``` 
+You can then access the keys and values of your shelf file. Since they are "list-like" values, use `list()`: `list(shelfFile.keys())`, `list(shelfFile.values())`.
+
+### Using `pprint.pformat()` to save variables
+
+You can use pprint.pformat() to save variables to a file in a legible *and* python-friendly way.
+```
+>>> import pprint
+>>> cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+>>> pprint.pformat(cats)
+"[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]"
+>>> fileObj = open('myCats.py', 'w')
+>>> fileObj.write('cats = ' + pprint.pformat(cats) + '\n')
+83
+>>> fileObj.close()
+```
+> code above will create a file named "mycats.py" which contains a single line `cats = [{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]`
+
+You can use `pprint.pformat()` to create new python files, which can in turn be imported:
+```
+>>> import myCats
+>>> myCats.cat
+[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]
+```
+
