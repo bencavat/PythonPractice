@@ -3,7 +3,7 @@
                 <head>                    
                     <meta http-equiv="X-UA-Compatible" content="IE=edge">
                     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-                    <title>new 1</title>
+                    <title>chapterNotes.txt</title>
                     <style type="text/css">
                     /*
 Copyright (c) 2017 Chris Patuzzo
@@ -565,7 +565,310 @@ pre code, pre tt {
                     </style>
                 </head>
                 <body style="">
-                <h3>The current file <u>new 1</u> has no valid Markdown file extension.</h3><div>Valid file extensions:md,mkd,mdwn,mdown,mdtxt,markdown,text,txt</div>
+                <h1 id="0">Automating the boring stuff</h1>
+<h2 id="1">Chapter 1: Python programming basics</h2>
+<p id="2"><strong>Expression vs statement</strong>: an expression is a combination of values and operators. All expressions evaluate (i.e. reduce) to a single value, statements do not.</p>
+<h2 id="4">Chapter 2: Flow control</h2>
+<p id="5"><strong>Condition</strong>: A condition is an expression used in a flow control statement that evaluates to a Boolean value.<br />
+<strong>Break vs continue statements</strong>: The break statement will move the execution outside and just after a loop. The continue statement will move the execution to the start of the loop.</p>
+<h2 id="8">Chapter 3: Functions</h2>
+<p id="9">The data type of <code>None</code> is <code>NoneType</code>.<br />
+Can use the <code>global</code> statement to modify a global variable from within a function. eg:</p>
+<pre><code id="11">def spam()
+  global eggs
+  eggs = 'spam'
+
+eggs = 'global'
+spam()
+print(eggs)
+</code></pre>
+<p id="20">Output: <code>spam</code><br />
+Exception handling: to avoid program crash from errors/exceptions, do <code>try</code> and <code>except</code> clauses. Eg: <code>except ZeroDivisionError</code></p>
+<h2 id="23">Chapter 4: Lists</h2>
+<p id="24">NB: slice of a list will include the first item, but will go up (not including) the second item. <code>spam[1:3]</code> grabs <code>spam[1]</code> and <code>spam[2]</code>.<br />
+Multiple assignment trick: can assign a list as a value for three variables. Make sure to have the same number of variables and items in the list or you'll get a <code>ValueError</code></p>
+<pre><code id="26">cat = [tuxedo, tabby, Sphynx]
+Twist, Daisy, Ramses = cat
+</code></pre>
+<p id="30"><strong>Method vs function</strong>: method is same as a function, except it is &quot;called on&quot; a value. Difference between <code>cat.index(tuxedo)</code> vs <code>print(cat[0])</code><br />
+Modify lists <em>in place</em> with <code>myList.insert(index, itemToInsert)</code> and <code>myList.append(itemToInsert)</code>.<br />
+Can also remove items with <code>myList.remove(itemToRemove)</code><br />
+<strong>List-like data types</strong>: strings and tuples.</p>
+<ul id="34">
+<li id="34">String vs list: a list is a <strong>mutable</strong> data type and strings are basically lists of characters.</li>
+<li id="35">Tuples vs lists: Tuples are types with parentheses, Also, tuples cannot have their values modified/appended/removed. Finally, using tuples is slightly faster.</li>
+</ul>
+<p id="37"><strong>⚠References</strong>: be careful when making a copy of a list, because modifying either list will affect the other. <strong>When you assign a list to a variable, you are actually assigning a list reference to the variable.</strong> Essentially, when copying a list, they both point to the same sequence of values. eg:</p>
+<pre><code id="38">cats = [&quot;tuxedo&quot;, &quot;tabby&quot;, &quot;Sphynx&quot;]
+
+catsCopy = cats
+
+catsCopy
+Out[4]: ['tuxedo', 'tabby', 'Sphynx']
+
+cats[1] = &quot;orange&quot;
+
+catsCopy
+Out[6]: ['tuxedo', 'orange', 'Sphynx']
+</code></pre>
+<p id="51">To avoid modifying the original list or dictionary, you can use the module <code>copy</code> which includes functions <code>copy()</code> and <code>deepcopy()</code> (the latter is used for embedded lists).</p>
+<blockquote id="53">
+<p id="53">&quot;The del statement is good to use when you know the index of the value
+you want to remove from the list. The remove() method is good when you
+know the value you want to remove from the list.&quot; (p. 91)</p>
+</blockquote>
+<h2 id="57">Chapter 5: Dictionaries and Structuring Data</h2>
+<p id="59"><code>keys(), values(), items()</code>: values returned are not true lists but they can be used in <code>for</code> loops. NB: values returned by <code>items()</code> method are tuples.<br />
+Can use get() method on dictionary to retrieve value based on key. get() takes two arguments: the key you are searching for, and a default value if the key doesn't exist.<br />
+Use <code>setdefault</code> to create a key value if the key does not exist already. If it does exist, it will return the current value. Can use it to create a character counter for example:</p>
+<pre><code id="62">count = {}
+string = &quot;foo bar baz&quot;
+for character in message:
+    count.setdefault('character', 0)
+	count[character] += 1
+</code></pre>
+<p id="70">Can pretty print a dictionary to make it easier to read using <code>pprint</code> and <code>pformat</code></p>
+<h2 id="72">Chapter 6: Manipulating Strings</h2>
+<p id="73">Use raw strings to enable the use of <em>escape characters</em> (<code>\</code>, <code>\t</code>, <code>\n</code>, <code>&quot;</code>, <code>'</code>). eg: <code>r&quot;This is a raw string so I can use \&quot;</code></p>
+<p id="75"><strong>String methods</strong>:</p>
+<ul id="76">
+<li id="76">methods to convert: <code>upper()</code>, <code>lower()</code></li>
+<li id="77"><code>is</code> methods to check content of string: <code>isupper()</code>, <code>islower()</code>, <code>isalpha()</code>, <code>isalnum()</code>, <code>isdecimal()</code>, <code>isspace()</code>, <code>istitle()</code></li>
+<li id="78"><code>join()</code> and <code>split()</code> (NB: <code>join</code> follows the separator eg <code>' '.join(listOfStrings)</code>, while <code>split</code> follows the string you are splitting eg <code>&quot;My name is Ben&quot;.split()</code>)</li>
+<li id="79">Can justify text to the left, right, or center: <code>ljust()</code>, <code>rjust()</code>, <code>center()</code>. Can be useful to output item lists/receipts.</li>
+<li id="80">remove whitespace with <code>strip()</code>, <code>rstrip()</code> and <code>lstrip()</code>. Whitespace by default but can choose any characters to strip - order doesn't matter i.e. <code>myString.strip('Spam')</code> is equivalent to <code>myString.strip('ampS')</code>.</li>
+<li id="81">Can import the module <strong><code>pyperclip</code></strong> (doesn't come by default) to copy and paste things to the clipboard: <code>pyperclip.copy(myString)</code>, <code>pyperclip.paste()</code>.</li>
+</ul>
+<h2 id="83">Chapter 7: Pattern Matching with Regular Expressions</h2>
+<p id="84">Can pass a raw string regex pattern to a <code>re.compile</code> object. Will return a <strong>regex pattern object</strong>.</p>
+<pre><code id="85">phoneNumberRegex = re.compile(r'\d{3}-\d{3}-\d{4}')
+</code></pre>
+<ul id="88">
+<li id="88">if want to capture newline character (<code>\n</code>), provide <code>re.compile()</code> the argument <code>re.DOTALL</code></li>
+<li id="89">if you want to ignore case, provide the argument <code>re.I</code></li>
+<li id="90">if you want to provide a multi-line regex pattern, provide argument <code>re.VERBOSE</code></li>
+</ul>
+<p id="92">Can combine the arguments using a <em>bitwise operator</em> <code>|</code>:</p>
+<pre><code id="93">someRegexValue = re.compile('foo', re.I | re.DOTALL | re.VERBOSE)
+</code></pre>
+<p id="96"><strong>N.B.</strong> for complex regex searches use <code>VERBOSE</code> and comments:</p>
+<pre><code id="97">phoneRegex = re.compile(r'''(
+	(\d{3}|\(\d{3}\))?		# area code
+	(\s|-|\.)? 			# separator
+	\d{3} 				# first 3 digits
+	(\s|-|\.) 			# separator
+	\d{4} 				# last 4 digits
+	(\s*(ext|x|ext.)\s*\d{2,5})?	# extension
+	)''', re.VERBOSE)
+</code></pre>
+<p id="108">Use <code>.search()</code> method on the regex object and pass a string value to find matches. NB search returns the first result. If you want to find all matches, use <code>findall()</code>.</p>
+<pre><code id="109">matchObject = phoneNumberRegex.search(&quot;My number is 415-555-4242.&quot;)
+</code></pre>
+<p id="112">If a match is found, can output the matched sub-string with <code>.group()</code>:</p>
+<pre><code id="113">matchObject.group()
+</code></pre>
+<p id="116">If you are using capture groups <code>()</code> in your regex pattern, <code>.group()</code> can return either the entire match with <code>.group()</code> or <code>.group(0)</code>, or your capture group <code>.group(1)</code>.</p>
+<pre><code id="117">&gt;&gt;&gt; regexPattern = re.compile(r'(\d{3})-(\d{3}-\d{4})')
+&gt;&gt;&gt; phoneNumberMatch = regexPattern.search(&quot;202-805-8085&quot;)
+&gt;&gt;&gt; phoneNumberMatch.group()
+'202-805-8085'
+&gt;&gt;&gt; phoneNumberMatch.group(1)
+'202'
+</code></pre>
+<p id="125">The <code>findall()</code> method returns a list of strings with every match in the searched string. <strong>N.B.</strong> if you use the <code>.findall()</code> method with capture groups, it will return a list of tuples of strings.</p>
+<pre><code id="126">&gt;&gt;&gt; regexPattern = re.compile(r'(\d{3})-(\d{3}-\d{4})')
+&gt;&gt;&gt; phoneNumberMatch = regexPattern.search(&quot;Call is 202-805-8085, home is 212-628-7724&quot;)
+&gt;&gt;&gt; phoneNumberMatch.group()
+'202-805-8085'
+&gt;&gt;&gt; phoneNumberMatch.group(1)
+'202'
+&gt;&gt;&gt; phoneNumberMatch.group(2)
+'805-8085'
+&gt;&gt;&gt; AllPhoneNumberFound = regexPattern.findall(&quot;Cell is 202-805-8085, home is 212-628-7724&quot;)
+&gt;&gt;&gt; AllPhoneNumberFound
+[('202', '805-8085'), ('212', '628-7724')]
+&gt;&gt;&gt; regexPatternNoGroup = re.compile(r'\d{3}-\d{3}-\d{4}')
+&gt;&gt;&gt; AllPhoneNumberFoundNoGroup = regexPatternNoGroup.findall(&quot;Cell is 202-805-8085, home is 212-628-7724&quot;)
+&gt;&gt;&gt; AllPhoneNumberFoundNoGroup
+['202-805-8085', '212-628-7724']
+</code></pre>
+<p id="143"><strong>Regex Character Classes:</strong></p>
+<table id="145">
+<thead>
+<tr id="145">
+<th id="145">shorthand</th>
+<th id="145">represents</th>
+</tr>
+</thead>
+<tbody>
+<tr id="147">
+<td id="147">\d</td>
+<td id="147">digits from 0 to 9</td>
+</tr>
+<tr id="148">
+<td id="148">\w</td>
+<td id="148">all word characters (letters, digits, underscore)</td>
+</tr>
+<tr id="149">
+<td id="149">\s</td>
+<td id="149">space, tab, ot newline character</td>
+</tr>
+</tbody>
+</table>
+<p id="151">Make your own character class:</p>
+<pre><code id="152">vowelRegex = re.compile(r'[AEIOUaeiou]')
+</code></pre>
+<p id="155"><strong>substitute strings</strong> using the <code>.sub()</code> method:</p>
+<pre><code id="156">&gt;&gt;&gt; agentNameRegex = re.compile(r'Agent \w+')
+&gt;&gt;&gt; agentNameRegex.sub(&quot;CENSORED&quot;, &quot;Agent Ben gave Agent Marina a very important loaf of bread&quot;)
+'CENSORED gave CENSORED a very important loaf of bread'
+</code></pre>
+<p id="161">Your wildcard <code>.*</code> can be greedy and will match as much as possible, or <strong>non-greedy</strong> and match the shortest string <code>.*?</code>.</p>
+<p id="163"><strong>Additional notes:</strong><br />
+Lookahead: <code>(?=foo)</code>
+Negative lookbehind: <code>(?&lt;!foo)</code></p>
+<ul id="166">
+<li id="166"><strong>N.B.</strong> Negative lookbehind can be concatenated.</li>
+</ul>
+<pre><code id="167">nameMatchObject = re.compile(r'(?&lt;!^)(?&lt;!! )[A-Z][a-z]+')
+</code></pre>
+<blockquote id="170">
+<p id="170"><em>searching for a name, can use negative lookbehind to exclude both beginning of line and previous punctuation</em></p>
+</blockquote>
+<h2 id="173">Chapter 8</h2>
+<table id="175">
+<thead>
+<tr id="175">
+<th id="175"><code>os</code> functions</th>
+<th id="175">usage</th>
+</tr>
+</thead>
+<tbody>
+<tr id="177">
+<td id="177"><code>os.getcwd()</code></td>
+<td id="177">Get current working directory.</td>
+</tr>
+<tr id="178">
+<td id="178"><code>os.chdir()</code></td>
+<td id="178">Change working directory</td>
+</tr>
+<tr id="179">
+<td id="179"><code>os.makedirs()</code></td>
+<td id="179">Create folder</td>
+</tr>
+<tr id="0">
+<td id="0"></td>
+<td id="0"></td>
+</tr>
+<tr id="181">
+<td id="181"><code>os.path.join()</code></td>
+<td id="181">Provide directory names and filename as arguments. Attaches argument strings together based on OS.</td>
+</tr>
+<tr id="182">
+<td id="182"><code>os.path.abspath(path)</code></td>
+<td id="182">Get the absolute path of the arg. eg: <code>os.path.abspath('.')</code></td>
+</tr>
+<tr id="183">
+<td id="183"><code>os.path.isabs(path)</code></td>
+<td id="183">Boolean; True is arg is absolute path. False if relative.</td>
+</tr>
+<tr id="184">
+<td id="184"><code>os.path.relpath(path, start)</code></td>
+<td id="184">Returns string of relative path from <code>start</code> to <code>path</code>. Will assume current working directory is start if none is provided.</td>
+</tr>
+<tr id="185">
+<td id="185"><code>os.path.basename(path)</code></td>
+<td id="185">will provide string of everything the <strong>after</strong> last slash in the <code>path</code> argument.</td>
+</tr>
+<tr id="186">
+<td id="186"><code>os.path.dirname(path)</code></td>
+<td id="186">will provide string of everything <strong>before</strong> the last slash in the <code>path</code> argument.</td>
+</tr>
+<tr id="187">
+<td id="187"><code>os.path.split(path)</code></td>
+<td id="187">will provide tuple of two strings, one for before last slash, one for after.</td>
+</tr>
+<tr id="0">
+<td id="0"></td>
+<td id="0"></td>
+</tr>
+<tr id="189">
+<td id="189"><code>os.path.getsize(path)</code></td>
+<td id="189">returns the size in bytes of the file in <code>path</code> arg. To get folder size of <code>currentPath</code>, iterate over all filenames in <code>os.listdir(currentPath)</code> and add up <code>os.path.getsize(os.path.join(currentPath,filename)</code></td>
+</tr>
+<tr id="190">
+<td id="190"><code>os.listdir(path)</code></td>
+<td id="190">returns the list of filename strings for each file in the <code>path</code> arg.</td>
+</tr>
+<tr id="0">
+<td id="0"></td>
+<td id="0"></td>
+</tr>
+<tr id="192">
+<td id="192"><code>os.path.isdir()</code></td>
+<td id="192">Boolean; return True if path exists and is directory.</td>
+</tr>
+<tr id="193">
+<td id="193"><code>os.path.isfile()</code></td>
+<td id="193">Boolean; return True if path exists and is file.</td>
+</tr>
+<tr id="194">
+<td id="194"><code>os.path.exists()</code></td>
+<td id="194">Boolean; return True if path to file or directory. exists.</td>
+</tr>
+<tr id="0">
+<td id="0"></td>
+<td id="0"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="197">Use <code>os</code> to avoid issues between Linux and Windows</h3>
+<p id="198">To avoid Linux vs Windows path issues, avoid hardcoding <code>\</code> for Windows or <code>/</code> for Linux.<br />
+Can use <code>os.path.sep</code> object to get the directory separator used by current OS:</p>
+<pre><code id="200">&gt;&gt;&gt; filepath = 'C:\\Windows\\System32\\calc.exe'
+&gt;&gt;&gt; filepath.split(os.path.sep)
+['C:', 'Windows', 'System32', 'calc.exe']
+</code></pre>
+<p id="205">Three steps of handling a file:</p>
+<ul id="206">
+<li id="206"><code>open('filepath', &lt;mode&gt;)</code> the file to create a file object. By default opens in <strong>read mode</strong> (<code>'r'</code>).  Can also open in <strong>append mode</strong> (<code>'a'</code>) and <strong>write mode</strong> (<code>'w'</code>)</li>
+<li id="207"><code>read()</code> or <code>write()</code> the file object.
+<ul id="208">
+<li id="208">Can use <code>readlines()</code> instead of <code>read()</code> to get a list of strings instead of a whole string of the text.</li>
+</ul>
+</li>
+<li id="209"><code>close()</code> the file</li>
+</ul>
+<h3 id="211">Saving variables with <code>shelve</code> module</h3>
+<p id="213">You can save variables into files using <code>shelve</code>.<br />
+This can be useful if you're saving parameters or configurations from your Python script, especially if the data is not meant to be read as a text file.</p>
+<pre><code id="215">import shelve
+shelfFile = shelve.open('mydData')
+dataList = [&quot;alpha&quot;, &quot;bravo&quot;, &quot;charlie&quot;]
+shelfFile[data] = dataList
+shelfFile.close()
+</code></pre>
+<p id="222">You can then access the keys and values of your shelf file. Since they are &quot;list-like&quot; values, use <code>list()</code>: <code>list(shelfFile.keys())</code>, <code>list(shelfFile.values())</code>.</p>
+<h3 id="224">Using <code>pprint.pformat()</code> to save variables</h3>
+<p id="226">You can use pprint.pformat() to save variables to a file in a legible <em>and</em> python-friendly way.</p>
+<pre><code id="227">&gt;&gt;&gt; import pprint
+&gt;&gt;&gt; cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+&gt;&gt;&gt; pprint.pformat(cats)
+&quot;[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]&quot;
+&gt;&gt;&gt; fileObj = open('myCats.py', 'w')
+&gt;&gt;&gt; fileObj.write('cats = ' + pprint.pformat(cats) + '\n')
+83
+&gt;&gt;&gt; fileObj.close()
+</code></pre>
+<blockquote id="237">
+<p id="237">code above will create a file named &quot;mycats.py&quot; which contains a single line <code>cats = [{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]</code></p>
+</blockquote>
+<p id="239">You can use <code>pprint.pformat()</code> to create new python files, which can in turn be imported:</p>
+<pre><code id="240">&gt;&gt;&gt; import myCats
+&gt;&gt;&gt; myCats.cat
+[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]
+</code></pre>
+
                 </body>
             </html>
             
