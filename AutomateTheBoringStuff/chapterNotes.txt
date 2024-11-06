@@ -243,4 +243,56 @@ You can use `pprint.pformat()` to create new python files, which can in turn be 
 >>> myCats.cat
 [{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]
 ```
+## Chapter 9: Debugging
+
+### Raising Exceptions
+**An exception is raised whenever Python tries to execute invalid code**
+```
+>>> raise Exception('This is the error message.')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+Exception: This is the error message.
+```
+> `raise` statements consists of: `raise` keyword, a call to the `Exception()` function, a helpful message passed as a string.
+
+**Best practice:** a raise statement inside a function, and the try and except statements in the code calling the function.
+```
+def myFunction(foo, bar, baz):
+    if len(foo) != 1:
+        raise Exception('Foo must be a single character string.')
+    print(bar * baz)
+
+try:
+    boxPrint(sym, w, h)
+except Exception as err:
+    print(f"An exception happened: {str(err)}")
+```
+> If an `Exception` object is returned from `myFunction()`, the `except` statement will store it in a variable named `err`
+
+### Getting the Traceback as a String
+Traceback is the information yielded when Python encounters an error. It includes the  error message, line number, and the sequence of calls that lead to the error (*call stack*).
+
+You can get the traceback info as a string with `traceback` module: `traceback.format_exc()`. 
+```
+>>> try:                                         e")
+	raise Exception("This is the error message")
+except:                                      e")
+	with open("errorInfo2.txt", 'w') as errorLog:
+		errorLog.write(traceback.format_exc())
+```
+> Instead of crashing program when an exception occurs, write to a log file and keep program running.
+
+### Assertions
+**An *assertion* is a sanity check performed by `assert` statements.**
+```
+>>> podBayDoorStatus = "I'm sorry, Dave. I'm afraid I can't do that"
+>>> assert podBayDoorStatus == "open", "The pod bay doors need to be 'open'."
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AssertionError: The pod bay doors need to be 'open'.
+```
+> Assertion consists of: `assert` keyword, a condition, a comma, a string to display when condition is `False`
+
+Unlike exceptions, your code *should not* handle assertions: if an assertion fails, the code should crash (fail fast).
+**Assertions are for programmer errors, not user errors**
 

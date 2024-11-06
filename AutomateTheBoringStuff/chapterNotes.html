@@ -868,6 +868,50 @@ shelfFile.close()
 &gt;&gt;&gt; myCats.cat
 [{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]
 </code></pre>
+<h2 id="245">Chapter 9: Debugging</h2>
+<h3 id="247">Raising Exceptions</h3>
+<p id="248"><strong>An exception is raised whenever Python tries to execute invalid code</strong></p>
+<pre><code id="249">&gt;&gt;&gt; raise Exception('This is the error message.')
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+Exception: This is the error message.
+</code></pre>
+<blockquote id="255">
+<p id="255"><code>raise</code> statements consists of: <code>raise</code> keyword, a call to the <code>Exception()</code> function, a helpful message passed as a string.</p>
+</blockquote>
+<p id="257"><strong>Best practice:</strong> a raise statement inside a function, and the try and except statements in the code calling the function.</p>
+<pre><code id="258">def myFunction(foo, bar, baz):
+    if len(foo) != 1:
+        raise Exception('Foo must be a single character string.')
+    print(bar * baz)
+
+try:
+    boxPrint(sym, w, h)
+except Exception as err:
+    print(f&quot;An exception happened: {str(err)}&quot;)
+</code></pre>
+<blockquote id="269">
+<p id="269">If an <code>Exception</code> object is returned from <code>myFunction()</code>, the <code>except</code> statement will store it in a variable named <code>err</code></p>
+</blockquote>
+<h3 id="271">Getting the Traceback as a String</h3>
+<p id="272">Traceback is the information yielded when Python encounters an error. It includes the  error message, line number, and the sequence of calls that lead to the error (<em>call stack</em>).</p>
+<p id="274">You can get the traceback info as a string with <code>traceback</code> module: <code>traceback.format_exc()</code>.</p>
+<pre><code id="275">&gt;&gt;&gt; try:                                         e&quot;)
+	raise Exception(&quot;This is the error message&quot;)
+except:                                      e&quot;)
+	with open(&quot;errorInfo2.txt&quot;, 'w') as errorLog:
+		errorLog.write(traceback.format_exc())
+</code></pre>
+<blockquote id="282">
+<p id="282">Instead of crashing program when an exception occurs, write to a log file and keep program running.</p>
+</blockquote>
+<h3 id="284">Assertions</h3>
+<p id="285"><strong>An <em>assertion</em> is a sanity check performed by <code>assert</code> statements.</strong></p>
+<pre><code id="286">
+</code></pre>
+<blockquote id="289">
+<p id="289">Assertion consists of: <code>assert</code> keyword, a condition, a comma, a string to display when condition is <code>False</code></p>
+</blockquote>
 
                 </body>
             </html>
