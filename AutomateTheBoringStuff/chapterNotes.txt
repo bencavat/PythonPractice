@@ -243,7 +243,14 @@ You can use `pprint.pformat()` to create new python files, which can in turn be 
 >>> myCats.cat
 [{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]
 ```
-## Chapter 9: Debugging
+
+## Chapter 9: Organizing Files
+
+
+
+
+
+## Chapter 10: Debugging
 
 ### Raising Exceptions
 **An exception is raised whenever Python tries to execute invalid code**
