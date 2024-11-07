@@ -246,8 +246,46 @@ You can use `pprint.pformat()` to create new python files, which can in turn be 
 
 ## Chapter 9: Organizing Files
 
+### The `shutil` module
+"Calling `shutil.copy(source, destination)` will copy the file at the path
+source to the folder at the path destination"
 
+`shutil.copytree()` will copy an entire folder and every folder and file contained in it.
 
+`shutil.move(source, destination)` moves source file or folder to destination. NB: can overwrite, or be used to rename a file.
+
+**deleting files and paths**:
+- `os.unlink(path)` will delete the file at path.
+- `os.rmdir(path)` will delete the folder at path. This folder must be
+empty of any files or folders.
+- `shutil.rmtree(path)` will remove the folder at path, and all files
+and folders it contains will also be deleted.
+
+**Can safe delete using `send2trash` Module**. This will send files to the recycle bin instead of deleting them forever.
+
+### Walking a directory tree:
+
+Can loop through folder, subfolders, and files in `os.walk("path")`.
+```
+for folderName, subfolders, filenames in os.walk('C:\\delicious'):
+	print('The current folder is ' + folderName)
+	for subfolder in subfolders:
+		print('SUBFOLDER OF ' + folderName + ': ' + subfolder)
+	for filename in filenames:
+		print('FILE INSIDE ' + folderName + ': '+ filename)
+```
+> `os.walk()` will return three values on each iteration through the loop: 1. A string of the current folder’s name, 2. A list of strings of the folders in the current folder, 3. A list of strings of the files in the current folder
+
+### Compressing Files with the zipfile Module
+To read the contents of a ZIP file, first you must create a `ZipFile` object with `zipfile.ZipFile()` 
+
+ZipFile objects methods: 
+- `namelist()`: returns a list of strings for all the files and folders contained in the ZIP file.
+- `getinfo()`: creates ZipInfo objects that have their own attributes, such as `file_size` and `compress_size` in bytes
+- `extractall()` will open zip file and copy all files to current working directory. Can also pass a string to a new destination path.
+- `extract("fileToExtract")` for a single file to be extracted.
+
+To create a zip file, you need to create a ZipFile object in write mode: `newZip = zipfile.ZipFile('new.zip', 'w')`
 
 
 ## Chapter 10: Debugging
