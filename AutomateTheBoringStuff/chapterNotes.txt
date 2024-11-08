@@ -197,7 +197,7 @@ nameMatchObject = re.compile(r'(?<!^)(?<!! )[A-Z][a-z]+')
 
 ### Use `os` to avoid issues between Linux and Windows
 To avoid Linux vs Windows path issues, avoid hardcoding `\` for Windows or `/` for Linux.  
-Can use `os.path.sep` object to get the directory separator used by current OS:
+Can use `os.path.sep` object to get the directory separator used by current OS:
 ```
 >>> filepath = 'C:\\Windows\\System32\\calc.exe'
 >>> filepath.split(os.path.sep)
@@ -287,7 +287,6 @@ ZipFile objects methods:
 
 To create a zip file, you need to create a ZipFile object in write mode: `newZip = zipfile.ZipFile('new.zip', 'w')`
 
-
 ## Chapter 10: Debugging
 
 ### Raising Exceptions
@@ -341,3 +340,41 @@ AssertionError: The pod bay doors need to be 'open'.
 Unlike exceptions, your code *should not* handle assertions: if an assertion fails, the code should crash (fail fast).
 **Assertions are for programmer errors, not user errors**
 
+Can disable assertions at runtime by passing the `-0` option 
+
+### Logging
+
+`logging` module:
+When Python logs an event, it creates a `LogRecord` object that holds information about that event.  
+The `logging` module’s `basicConfig()` function lets you specify what details about the LogRecord object you want to see and how you want those details displayed.
+```
+import logging
+logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+logging.debug('Start of program')
+```
+> `debug()` function will call `basicConfig()`, a line of info will be printed.
+
+
+**Logging levels:**
+Pass different values to `logging.basicConfig(level=)` to calibrate the amount of info you wish to see. 
+
+Level | Logging function | Description
+-|-|-
+DEBUG | `logging.debug()` | The lowest level. Used for small details. Usually you care about these messages only when diagnosing problems.
+INFO | `logging.info()` | Used to record information on general events in your program or confirm that things are working at their point in the program.
+WARNING | `logging.warning()` | Used to indicate a potential problem that doesn’t prevent the program from working but might do so in the future.
+ERROR | `logging.error()` | Used to record an error that caused the program to fail to do something.
+CRITICAL | `logging.critical()` | The highest level. Used to indicate a fatal error that has caused or is about to cause the program to stop running entirely
+
+Can disable subsequent logs with `logging.disable(logging.CRITICAL)` (or with any other level).
+
+Can log to a file with `filename` keyword argument of `logging.basicConfig()` function. eg: `logging.basicConfig(filename='myProgramLog.txt', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')`
+
+### Debugger
+
+Based on IDLE debugger functionalities:
+- Go: code executes until it reaches a **breakpoint**
+- Step: execute next line of code then pause again. If code is a function call, will "step into" the function and go to the first line of said function.
+- Over: similar to step, except it will "step over" a function call and execute it.
+- Out: execute all lines of code until you have stepped out of the function you're in.
+- Quit: terminates program
