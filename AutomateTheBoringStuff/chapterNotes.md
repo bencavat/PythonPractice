@@ -378,3 +378,36 @@ Based on IDLE debugger functionalities:
 - Over: similar to step, except it will "step over" a function call and execute it.
 - Out: execute all lines of code until you have stepped out of the function you're in.
 - Quit: terminates program
+
+## Chapter 11: Web Scraping
+
+### `webbrowser`
+`webbrowser` Comes with python. Used to open URLs in the default web browser.
+- **`webbrowser.open(url)`**: Opens the specified URL in (default) browser tab.
+
+### `requests`:
+Create `Response` object to download files and web pages from the Internet. Provides a simpler interface than `urllib2`.
+
+`Request` object methods:
+- **`requests.get(url)`**: Downloads the content at the specified string URL, returns a `Response` object. 
+  - `Response` object a `status_code` variable you can check against `requests.codes.ok`
+  - If request has succeeded, content of page can be found in `text` variable of `Response` object
+- **`response.raise_for_status()`**: Checks for any HTTP errors.
+- **`response.iter_content(chunk_size)`**: Allows streaming of large content in chunks to avoid excessive memory usage.
+
+
+### `BeautifulSoup` (bs4) 
+`BeautifulSoup (bs4)` Parses HTML, the format that web pages are written in, allowing targeted extraction of elements.
+
+**bs4 methods:**
+- **`bs4.BeautifulSoup(html, "html.parser")`**: Creates a `BeautifulSoup` object from HTML content.
+- **`soup.select(selector)`**: Finds elements matching a CSS selector (e.g., `soup.select('div > p')`).
+- **`tag.get(attribute)`**: Extracts the value of a specified attribute from an HTML tag.
+
+### `selenium`: 
+Selenium Launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
+- **`webdriver.Firefox()`**: Launches a Firefox browser instance controlled by Selenium.
+- **`WebDriver.find_element_by_*()`**: Locates a single element on a page by various attributes (e.g., `class_name`, `id`, `css_selector`).
+- **`WebDriver.find_elements_by_*()`**: Finds multiple elements matching specified attributes.
+- **`WebElement.click()`**: Simulates a click on the element.
+- **`WebElement.send_keys(Keys.*)`**: Sends keyboard keys to an element, useful for navigating or submitting forms.
