@@ -391,21 +391,74 @@ Create `Response` object to download files and web pages from the Internet. Prov
 `Request` object methods:
 - **`requests.get(url)`**: Downloads the content at the specified string URL, returns a `Response` object. 
   - `Response` object a `status_code` variable you can check against `requests.codes.ok`
-  - If request has succeeded, content of page can be found in `text` variable of `Response` object
-- **`response.raise_for_status()`**: Checks for any HTTP errors.
-- **`response.iter_content(chunk_size)`**: Allows streaming of large content in chunks to avoid excessive memory usage.
+  - If request has succeeded, content of page can be found in `text` variable of `Response` object: `myResponseObject.text`
+- **`response.raise_for_status()`**: Checks for any HTTP errors - *best practice: use raise_for_status after response.get() to make sure your download worked*
+- **`response.iter_content(chunk_size)`**: Allows streaming of large content in chunks to avoid excessive memory usage. A good default size would be 100,000 bytes. Use this in a for loop:
+```
+>>> import requests
+>>> res = requests.get('http://www.gutenberg.org/cache/epub/1112/pg1112.txt')
+>>> res.raise_for_status()
+>>> playFile = open('RomeoAndJuliet.txt', 'wb')
+>>> for chunk in res.iter_content(100000):
+playFile.write(chunk)
+100000
+78981
+>>> playFile.close()
+```
+> N.B. Open files you are writing in binary write mode `open('myText.txt', 'wb')` to maintain *Unicode encoding* of the text. This is especially important when dealing with web pages (eg: writing a web page to a local file). Sources on encoding:
+>- [Joel on Software: The Absolute Minimum Every Software Developer
+Absolutely, Positively Must Know About Unicode and Character Sets
+(No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html)
+>- [Pragmatic Unicode](http://nedbatchelder.com/text/unipain.html)
 
+### HTML basics
+- Hypertext Markup Language (HTML) files are plaintext files with the `.html` extension. 
+- Text is surrounded by *tags*, eg: `<strong>Hello</strong> world!`
+- Some tags have extra properties in the form of *attributes* within the angle brackets. 
+  - eg: the URL is determined by the `href` attribute in `Al's free ,<a href="http://inventwithpython.com">Python books</a>.`
+  - Some elements have an *id* attribute to uniquely identify elements in the page, which can be used when web scraping.
+ 
+### BeautifulSoup (`bs4`) 
+BeautifulSoup (`bs4`) Parses HTML, the format that web pages are written in, allowing targeted extraction of elements. **NB**: don't use regex to parse HTML: it's tedious and error prone.
+```
+>>> import requests, bs4
+>>> res = requests.get("http://nostarch.com")
+>>> res.raise_for_status
+<bound method Response.raise_for_status of <Response [200]>>
+>>> noStarchSoup = bs4.BeautifulSoup(res.text)
+>>> type(noStarchSoup)
+<class 'bs4.BeautifulSoup'>
+```
+> Can also pass a local html file to `bs4.BeautifulSoup()`
 
-### `BeautifulSoup` (bs4) 
-`BeautifulSoup (bs4)` Parses HTML, the format that web pages are written in, allowing targeted extraction of elements.
+Retrieve the web page element of your choice by calling `select()` method of BeautifulSoup object and passing a string of a CSS *selector* for your element.
+- `select()` method returns a list of Tag objects
+- can get the text (or inner HTML) by calling `.getText()` method on Tag object
+- can get a dictionary of the element's attribute and its value by calling `.attrs` variable of Tag object
+- can get the entire element as a string by using `str()` function (attribute, inner html, etc)
+
+**Common selector patterns:**
+
+Selector passed to `select()` | Will match...
+-|-
+soup.select('div') | All elements named `div`
+soup.select('#author') | The element with an id attribute of author
+soup.select('.notice') | All elements that use a CSS class attributenamed notice
+soup.select('div span') | All elements named `span` that are withinan element named `div`
+soup.select('div > span') | All elements named `span` that aredirectly within an element named `div`,with no other element in between
+soup.select('input[name]') | All elements named `input` that have a `name` attribute with any value
+soup.select('input[type="button"]') | All elements named `input` that have an attribute named `type` with value `button`
+
+Can combine selector patterns: `soup.select('p #author')`
 
 **bs4 methods:**
-- **`bs4.BeautifulSoup(html, "html.parser")`**: Creates a `BeautifulSoup` object from HTML content.
+- **`bs4.BeautifulSoup(htmlFileOrText, 'html.parser')`**: Creates a `BeautifulSoup` object from HTML content.
 - **`soup.select(selector)`**: Finds elements matching a CSS selector (e.g., `soup.select('div > p')`).
 - **`tag.get(attribute)`**: Extracts the value of a specified attribute from an HTML tag.
 
 ### `selenium`: 
-Selenium Launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
+Selenium Launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
+
 - **`webdriver.Firefox()`**: Launches a Firefox browser instance controlled by Selenium.
 - **`WebDriver.find_element_by_*()`**: Locates a single element on a page by various attributes (e.g., `class_name`, `id`, `css_selector`).
 - **`WebDriver.find_elements_by_*()`**: Finds multiple elements matching specified attributes.
