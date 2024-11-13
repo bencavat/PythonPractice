@@ -458,9 +458,15 @@ Can combine selector patterns: `soup.select('p #author')`
 
 ### `selenium`: 
 Selenium Launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
+```
+from selenium import webdriver
+browser = webdriver.Firefox()
+browser.get('http://inventwithpython.com')
+```
 
+**selenium methods**:
 - **`webdriver.Firefox()`**: Launches a Firefox browser instance controlled by Selenium.
-- **`WebDriver.find_element_by_*()`**: Locates a single element on a page by various attributes (e.g., `class_name`, `id`, `css_selector`).
-- **`WebDriver.find_elements_by_*()`**: Finds multiple elements matching specified attributes.
+- **`browser.find_element_by_*()`**: Locates a single element on a page by various attributes (e.g., `class_name`, `id`, `css_selector`).
+- **`browser.find_elements_by_*()`**: Finds multiple elements matching specified attributes.
 - **`WebElement.click()`**: Simulates a click on the element.
 - **`WebElement.send_keys(Keys.*)`**: Sends keyboard keys to an element, useful for navigating or submitting forms.
