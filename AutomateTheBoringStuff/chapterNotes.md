@@ -417,9 +417,9 @@ Absolutely, Positively Must Know About Unicode and Character Sets
 - Some tags have extra properties in the form of *attributes* within the angle brackets. 
   - eg: the URL is determined by the `href` attribute in `Al's free ,<a href="http://inventwithpython.com">Python books</a>.`
   - Some elements have an *id* attribute to uniquely identify elements in the page, which can be used when web scraping.
- 
-### BeautifulSoup (`bs4`) 
-BeautifulSoup (`bs4`) Parses HTML, the format that web pages are written in, allowing targeted extraction of elements. **NB**: don't use regex to parse HTML: it's tedious and error prone.
+
+### BeautifulSoup (`bs4`)
+BeautifulSoup (`bs4`) Parses HTML, the format that web pages are written in, allowing targeted extraction of elements. **NB**: don't use regex to parse HTML, it's tedious and error prone.
 ```
 >>> import requests, bs4
 >>> res = requests.get("http://nostarch.com")
@@ -437,27 +437,28 @@ Retrieve the web page element of your choice by calling `select()` method of Bea
 - can get a dictionary of the element's attribute and its value by calling `.attrs` variable of Tag object
 - can get the entire element as a string by using `str()` function (attribute, inner html, etc)
 
-**Common selector patterns:**
+**bs4 methods:**
+- `mySoup = bs4.BeautifulSoup(htmlFileOrText, 'html.parser')`: Creates a `BeautifulSoup` object from HTML content.
+- `myTagObjects = mySoup.select(selector)`: Finds elements matching a CSS *selector*. Creates list of Tag objects.
+	- `myTagObjects[0].attr`: gives dictionary with element's attribute and value.
+	- `myTagObjects[0].getText()`: gives string value of element's inner HTML/text
+- `myTagObject.get(attribute)`: Extracts the value of a specified attribute from an HTML tag.
+
+**Common selector patterns** to find elements on the Page
 
 Selector passed to `select()` | Will match...
 -|-
+soup.select('*') | All elements
 soup.select('div') | All elements named `div`
 soup.select('#author') | The element with an id attribute of author
-soup.select('.notice') | All elements that use a CSS class attributenamed notice
-soup.select('div span') | All elements named `span` that are withinan element named `div`
-soup.select('div > span') | All elements named `span` that aredirectly within an element named `div`,with no other element in between
+soup.select('.notice') | All elements that use a CSS class attribute named notice
+soup.select('div span') | All elements named `span` that are within an element named `div`
+soup.select('div > span') | All elements named `span` that are directly within an element named `div`, with no other element in between
 soup.select('input[name]') | All elements named `input` that have a `name` attribute with any value
 soup.select('input[type="button"]') | All elements named `input` that have an attribute named `type` with value `button`
 
-Can combine selector patterns: `soup.select('p #author')`
-
-**bs4 methods:**
-- **`bs4.BeautifulSoup(htmlFileOrText, 'html.parser')`**: Creates a `BeautifulSoup` object from HTML content.
-- **`soup.select(selector)`**: Finds elements matching a CSS selector (e.g., `soup.select('div > p')`).
-- **`tag.get(attribute)`**: Extracts the value of a specified attribute from an HTML tag.
-
 ### `selenium`: 
-Selenium Launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
+Selenium launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
 ```
 from selenium import webdriver
 browser = webdriver.Firefox()
@@ -465,8 +466,22 @@ browser.get('http://inventwithpython.com')
 ```
 
 **selenium methods**:
-- **`webdriver.Firefox()`**: Launches a Firefox browser instance controlled by Selenium.
-- **`browser.find_element_by_*()`**: Locates a single element on a page by various attributes (e.g., `class_name`, `id`, `css_selector`).
-- **`browser.find_elements_by_*()`**: Finds multiple elements matching specified attributes.
-- **`WebElement.click()`**: Simulates a click on the element.
-- **`WebElement.send_keys(Keys.*)`**: Sends keyboard keys to an element, useful for navigating or submitting forms.
+- `webdriver.Firefox()`: Launches a Firefox browser instance controlled by Selenium.
+- `browser.find_element_by_*()`: Locates a single element on a page by various attributes
+  - (e.g., `class_name`, `id`, `css_selector`).
+- `browser.find_elements_by_*()`: Finds multiple elements matching specified attributes.
+- `WebElement.click()`: Simulates a click on the element.
+- `WebElement.send_keys(Keys.*)`: Sends keyboard keys to an element, useful for navigating or submitting forms.
+
+**WebElement Attributes and Methods**
+
+Attribute or method | Description
+-|-
+tag_name | The tag name, such as 'a' for an <a> element
+get_attribute(name) | The value for the element’s name attribute
+text | The text within the element, such as 'hello' in <span>hello</span>
+clear() | For text field or text area elements, clears the text typed into it
+is_displayed() | Returns True if the element is visible; otherwise returns False
+is_enabled() | For input elements, returns True if the element is enabled; otherwise returns False
+is_selected() | For checkbox or radio button elements, returns True if the element is selected; otherwise returns False
+location | A dictionary with keys 'x' and 'y' for the position of the element in the page
