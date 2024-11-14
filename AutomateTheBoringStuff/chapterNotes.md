@@ -393,7 +393,7 @@ Create `Response` object to download files and web pages from the Internet. Prov
   - `Response` object a `status_code` variable you can check against `requests.codes.ok`
   - If request has succeeded, content of page can be found in `text` variable of `Response` object: `myResponseObject.text`
 - **`response.raise_for_status()`**: Checks for any HTTP errors - *best practice: use raise_for_status after response.get() to make sure your download worked*
-- **`response.iter_content(chunk_size)`**: Allows streaming of large content in chunks to avoid excessive memory usage. A good default size would be 100,000 bytes. Use this in a for loop:
+- **`response.iter_content(chunk_size)`**: Allows streaming of large content in chunks to avoid excessive memory usage. A good default size would be 100,000 bytes. Use this in a for loop:
 ```
 >>> import requests
 >>> res = requests.get('http://www.gutenberg.org/cache/epub/1112/pg1112.txt')
@@ -412,7 +412,7 @@ Absolutely, Positively Must Know About Unicode and Character Sets
 >- [Pragmatic Unicode](http://nedbatchelder.com/text/unipain.html)
 
 ### HTML basics
-- Hypertext Markup Language (HTML) files are plaintext files with the `.html` extension. 
+- Hypertext Markup Language (HTML) files are plaintext files with the `.html` extension. 
 - Text is surrounded by *tags*, eg: `<strong>Hello</strong> world!`
 - Some tags have extra properties in the form of *attributes* within the angle brackets. 
   - eg: the URL is determined by the `href` attribute in `Al's free ,<a href="http://inventwithpython.com">Python books</a>.`
@@ -448,7 +448,7 @@ Retrieve the web page element of your choice by calling `select()` method of Bea
 
 Selector passed to `select()` | Will match...
 -|-
-soup.select('*') | All elements
+soup.select('*') | All elements
 soup.select('div') | All elements named `div`
 soup.select('#author') | The element with an id attribute of author
 soup.select('.notice') | All elements that use a CSS class attribute named notice
@@ -458,20 +458,41 @@ soup.select('input[name]') | All elements named `input` that have a `name` attri
 soup.select('input[type="button"]') | All elements named `input` that have an attribute named `type` with value `button`
 
 ### `selenium`: 
-Selenium launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
+Selenium launches and controls a web browser. Selenium is able to fill in forms and simulate mouse clicks in this browser.
 ```
 from selenium import webdriver
 browser = webdriver.Firefox()
 browser.get('http://inventwithpython.com')
 ```
 
-**selenium methods**:
-- `webdriver.Firefox()`: Launches a Firefox browser instance controlled by Selenium.
-- `browser.find_element_by_*()`: Locates a single element on a page by various attributes
-  - (e.g., `class_name`, `id`, `css_selector`).
-- `browser.find_elements_by_*()`: Finds multiple elements matching specified attributes.
-- `WebElement.click()`: Simulates a click on the element.
-- `WebElement.send_keys(Keys.*)`: Sends keyboard keys to an element, useful for navigating or submitting forms.
+`Webdriver` object allows you to find one or multiple elements on a page.
+- if no match, raises ` NoSuchElement` exception.
+
+**selenium webdriver methods**:
+- Navigate the browser:
+  - `browser = webdriver.Firefox()`: Launches a Firefox browser instance controlled by Selenium.
+  - `browser.get(myURL)`: go to designated page
+  - `browser.back()`: Clicks the Back button.
+  - `browser.forward()`: Clicks the Forward button.
+  - `browser.refresh()`: Clicks the Refresh/Reload button.
+  - `browser.quit()`: Clicks the Close Window button.
+
+**Finding an element on a page**
+- Has changed - cannot find_element_by_\* anymore
+- import `By` object: `from selenium.webdriver.common.by import By`
+- can use either `find_element()` or `find_elements()`
+  - Return a `Web Element` object. 
+  - both take first argument `By.fooBar` where fooBar can be any of the following:
+```
+ID = "id"
+NAME = "name"
+XPATH = "xpath"
+LINK_TEXT = "link text"
+PARTIAL_LINK_TEXT = "partial link text"
+TAG_NAME = "tag name"
+CLASS_NAME = "class name"
+CSS_SELECTOR = "css selector"
+```
 
 **WebElement Attributes and Methods**
 
@@ -484,4 +505,36 @@ clear() | For text field or text area elements, clears the text typed into it
 is_displayed() | Returns True if the element is visible; otherwise returns False
 is_enabled() | For input elements, returns True if the element is enabled; otherwise returns False
 is_selected() | For checkbox or radio button elements, returns True if the element is selected; otherwise returns False
-location | A dictionary with keys 'x' and 'y' for the position of the element in the page
+location | A dictionary with keys 'x' and 'y' for the position of the element in the page
+`WebElement.click()` | Simulates a click on the element.
+`WebElement.send_keys(Keys.*)` | Sends keyboard keys to an element, useful for navigating or submitting forms.
+
+**Example with gmail**:
+- Find the email box, fill it, and click the submit button:
+```
+>>> from selenium import webdriver
+>>> from selenium.webdriver.common.by import By
+>>> browser = webdriver.Firefox()
+>>> browser.get('http://gmail.com')
+>>> emailElem = browser.find_element(By.ID, 'identifierId')
+>>> emailElem.send_keys('not_my_email@gmail.com')
+>>> submitElem = browser.find_element(By.ID, 'identifierNext')
+>>> submitElem.click()
+```
+
+**Selenium special keys**
+
+Need to import `selenium.webdriver.common.keys` Module:
+`from selenium.webdriver.common.keys import Keys`
+
+Attribute | Meanings
+-|-
+`Keys.DOWN` | Keyboard arrow keys. Can replace with `UP`, `LEFT`, `RIGHT`
+`Keys.ENTER` | Enter key. Can replace with `RETURN`
+`Keys.HOME` | Home key. Can replace with `HOME`, `END`, `PAGE_DOWN`,`ESCAPE`, `BACK_SPACE`, `DELETE`, `F1`, `TAB`, `PAGE_UP`
+
+**browser options**:
+- `browser.back()`: Clicks the Back button.
+- `browser.forward()`: Clicks the Forward button.
+- `browser.refresh()`: Clicks the Refresh/Reload button.
+- `browser.quit()`: Clicks the Close Window button.
